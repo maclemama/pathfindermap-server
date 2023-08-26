@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 
-const queryRoutes = require('./routes/query');
+const queryRoutes = require('./routes/query-routes');
 
 const ENV = process.env.ENV;
 const PORT = ENV === "PROD" ? "" : process.env.PORT || 8080;
