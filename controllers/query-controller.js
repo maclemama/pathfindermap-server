@@ -12,7 +12,6 @@ const keywordQueryFlow = async (payload) => {
 		longitude,
 		latitude,
 		radius,
-		price_range,
 		opennow_only,
 	} = payload;
 
@@ -25,9 +24,7 @@ const keywordQueryFlow = async (payload) => {
 		for (const keyword in query_keyword) {
 			const thisKeyword = query_keyword[keyword];
 			const additionParams = {
-				keyword: thisKeyword,
-				maxprice: price_range[1],
-				minprice: price_range[0],
+				keyword: thisKeyword
 			};
 			if (opennow_only) {
 				additionParams.opennow = true;

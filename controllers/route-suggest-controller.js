@@ -62,7 +62,7 @@ exports.routeSuggest = (placesAry, latitude, longitude, duration) => {
 								suggestedRoute.route_waypoints.push({
 									latitude: thisLatitude,
 									longitude: thisLongitude,
-									open_now: thisPlace.opening_hours.open_now,
+									open_now: thisPlace.opening_hours ? thisPlace.opening_hours.open_now : "",
 									place_id: thisPlace.place_id,
 									price_level: thisPlace.price_level,
 									rating: thisPlace.rating,
