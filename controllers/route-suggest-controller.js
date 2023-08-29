@@ -86,7 +86,7 @@ exports.routeSuggest = (placesAry, latitude, longitude, duration) => {
 				}
 			}
 
-			if (suggestedRoute.route_waypoints.length > 1) {
+			if (suggestedRoute.route_waypoints.length > 0) {
 				routes.push(suggestedRoute);
 			}
 		}

@@ -13,8 +13,6 @@ const keywordQueryFlow = async (payload) => {
 		latitude,
 		radius,
 		price_range,
-		include_indoor,
-		include_outdoor,
 		opennow_only,
 	} = payload;
 
@@ -23,20 +21,11 @@ const keywordQueryFlow = async (payload) => {
 	try {
 		const allKeywordPlacesResults = [];
 		const routeResults = [];
-		let inOutDoor = "";
-
-		if (include_indoor && !include_outdoor) {
-			inOutDoor = " indoor";
-		}
-
-		if (!include_indoor && include_outdoor) {
-			inOutDoor = " outdoor";
-		}
 
 		for (const keyword in query_keyword) {
 			const thisKeyword = query_keyword[keyword];
 			const additionParams = {
-				keyword: `${thisKeyword}${inOutDoor}`,
+				keyword: thisKeyword,
 				maxprice: price_range[1],
 				minprice: price_range[0],
 			};
