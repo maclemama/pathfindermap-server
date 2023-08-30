@@ -19,8 +19,16 @@ exports.up = function (knex) {
 			table.timestamp("created_at").defaultTo(knex.fn.now());
 		})
 		.createTable("route_place", (table) => {
-			table.uuid("place_id").notNullable().references("place.id");
-			table.uuid("route_id").notNullable().references("route.id");
+			table
+				.uuid("place_id")
+				.notNullable()
+				.references("place.id")
+				.onDelete("CASCADE");
+			table
+				.uuid("route_id")
+				.notNullable()
+				.references("route.id")
+				.onDelete("CASCADE");
 			table.timestamp("created_at").defaultTo(knex.fn.now());
 		});
 };

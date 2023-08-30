@@ -20,7 +20,7 @@ exports.up = function (knex) {
 		})
 		.createTable("query", (table) => {
 			table.uuid("id").notNullable().primary().defaultTo(knex.fn.uuid());
-			table.integer("user_id").unsigned().notNullable();
+			table.integer("user_id").unsigned().nullable();
 			table.string("query_mode").notNullable();
 			table.integer("duration").notNullable();
 			table.integer("radius").notNullable();
@@ -34,11 +34,15 @@ exports.up = function (knex) {
 			table
 				.timestamp("updated_at")
 				.defaultTo(knex.raw("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"));
-			table.foreign("user_id").references("id").inTable("user");
+			table
+				.foreign("user_id")
+				.references("id")
+				.inTable("user")
+				.onDelete("CASCADE");
 		})
 		.createTable("route", (table) => {
 			table.uuid("id").notNullable().primary();
-			table.integer("user_id").unsigned().notNullable();
+			table.integer("user_id").unsigned().nullable();
 			table.uuid("query_id").notNullable();
 			table.float("longitude").notNullable();
 			table.float("latitude").notNullable();
@@ -49,8 +53,16 @@ exports.up = function (knex) {
 			table
 				.timestamp("updated_at")
 				.defaultTo(knex.raw("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"));
-			table.foreign("query_id").references("id").inTable("query");
-			table.foreign("user_id").references("id").inTable("user");
+			table
+				.foreign("query_id")
+				.references("id")
+				.inTable("query")
+				.onDelete("CASCADE");
+			table
+				.foreign("user_id")
+				.references("id")
+				.inTable("user")
+				.onDelete("CASCADE");
 		});
 };
 
