@@ -1,6 +1,7 @@
 module.exports = [
 	{
-		user_id: 1,
+		id: 1,
+        user_id: 1,
 		query_mode: "keyword",
 		duration: 50,
 		radius: 5000,
@@ -8,8 +9,10 @@ module.exports = [
 		longitude: 50.23424,
 		latitude: -0.5123123,
 		query_keyword: "park,lunch,tesco",
+		route_id: 1,
 	},
 	{
+        id: 2,
 		user_id: 2,
 		query_mode: "mood",
 		duration: 30,
@@ -18,8 +21,10 @@ module.exports = [
 		longitude: -73.98745,
 		latitude: 40.748817,
 		query_mood: "relax",
+		route_id: 2,
 	},
 	{
+        id: 3,
 		user_id: 3,
 		query_mode: "random",
 		duration: 75,
@@ -28,8 +33,10 @@ module.exports = [
 		longitude: 2.2945,
 		latitude: 48.858844,
 		query_mood: "excited",
+		route_id: 3,
 	},
 	{
+        id: 4,
 		user_id: 4,
 		query_mode: "keyword",
 		duration: 60,
@@ -38,8 +45,10 @@ module.exports = [
 		longitude: -118.2437,
 		latitude: 34.0522,
 		query_keyword: "coffee,bookstore",
+		route_id: 4,
 	},
 	{
+        id: 5,
 		user_id: 1,
 		query_mode: "mood",
 		duration: 45,
@@ -48,5 +57,6 @@ module.exports = [
 		longitude: -0.1278,
 		latitude: 51.5074,
 		query_mood: "calm",
+		route_id: 5,
 	},
 ];

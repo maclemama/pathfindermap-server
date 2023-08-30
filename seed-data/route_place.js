@@ -1,0 +1,22 @@
+module.exports = [
+	{
+        place_id:1,
+        route_id:1
+    },
+    {
+        place_id:2,
+        route_id:2
+    },
+    {
+        place_id:3,
+        route_id:3
+    },
+    {
+        place_id:4,
+        route_id:4
+    },
+    {
+        place_id:5,
+        route_id:5
+    }
+]

@@ -25,8 +25,8 @@ exports.up = function (knex) {
 			table.integer("duration").notNullable();
 			table.integer("radius").notNullable();
 			table.boolean("opennow_only").notNullable();
-			table.float("longitude").notNullable();
-			table.float("latitude").notNullable();
+			table.specificType('longitude', 'double precision').notNullable();
+			table.specificType('latitude', 'double precision').notNullable();
 			table.string("query_keyword").nullable();
 			table.string("query_mood").nullable();
 			table.uuid("route_id").nullable().defaultTo(knex.fn.uuid());
@@ -44,9 +44,9 @@ exports.up = function (knex) {
 			table.uuid("id").notNullable().primary();
 			table.integer("user_id").unsigned().nullable();
 			table.uuid("query_id").notNullable();
-			table.float("longitude").notNullable();
-			table.float("latitude").notNullable();
-			table.integer("route_duration").notNullable();
+			table.specificType('longitude', 'double precision').notNullable();
+			table.specificType('latitude', 'double precision').notNullable();
+			table.integer("duration").notNullable();
 			table.boolean("user_saved").notNullable().defaultTo(false);
 			table.boolean("user_selected").notNullable().defaultTo(false);
 			table.timestamp("created_at").defaultTo(knex.fn.now());
