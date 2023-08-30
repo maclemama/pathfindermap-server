@@ -6,6 +6,7 @@ const {
 	checkFilledAllFieldObject,
 	checkEmptyObject,
 } = require("../utils/checkerUtils");
+const { getRandomElementsFromArray } = require("../utils/dataUtils");
 
 const keywordQueryFlow = async (payload) => {
 	const { query_keyword, duration, longitude, latitude, radius, opennow_only } =
@@ -52,26 +53,66 @@ const keywordQueryFlow = async (payload) => {
 };
 
 const placeTypeQueryFlow = async (payload) => {
-	const { query_mood, duration, longitude, latitude, radius, opennow_only, user_id } =
-		payload;
+	const {
+		query_mode,
+		query_mood,
+		duration,
+		longitude,
+		latitude,
+		radius,
+		opennow_only,
+		user_id,
+	} = payload;
 
 	try {
+		let placeType;
 		// get google place type conversion from chatGPT
-		const placeType = await chatgptController.getPlaceType(query_mood);
+		if (query_mode === "mood") {
+			placeType = await chatgptController.getPlaceType(query_mood);
+		} else if (query_mode === "random") {
+			const allRecommendedPlaceTypes = [
+				"amusement_park",
+				"aquarium",
+				"art_gallery",
+				"bakery",
+				"beauty_salon",
+				"book_store",
+				"bowling_alley",
+				"cafe",
+				"campground",
+				"church",
+				"city_hall",
+				"department_store",
+				"electronics_store",
+				"furniture_store",
+				"home_goods_store",
+				"library",
+				"movie_theater",
+				"museum",
+				"park",
+				"restaurant",
+				"spa",
+				"stadium",
+				"supermarket",
+				"tourist_attraction",
+				"zoo",
+			];
+			placeType = getRandomElementsFromArray(allRecommendedPlaceTypes, 10);
+		}
 
 		// get places for different keywords
-		const allMoodPlacesResults = [];
+		const allPlaceResults = [];
 
 		if (placeType) {
 			for (const place in placeType) {
-				const thisMood = placeType[place];
+				const thisPlaceType = placeType[place];
 				const additionParams = {
-					type: thisMood,
+					type: thisPlaceType,
 				};
 				if (opennow_only) {
 					additionParams.opennow = true;
 				}
-				const moodPlacesResults = await googlePlaceController.getGooglePlace(
+				const placesResults = await googlePlaceController.getGooglePlace(
 					latitude,
 					longitude,
 					radius,
@@ -79,18 +120,20 @@ const placeTypeQueryFlow = async (payload) => {
 					additionParams
 				);
 
-				moodPlacesResults.mood = thisMood;
+				if (query_mode === "mood") {
+					placesResults.mood = thisPlaceType;
+				}
 
-				allMoodPlacesResults.push(moodPlacesResults);
+				allPlaceResults.push(placesResults);
 			}
-		}else{
+		} else {
 			const additionParams = {
 				keyword: query_mood,
 			};
 			if (opennow_only) {
 				additionParams.opennow = true;
 			}
-			const moodPlacesResults = await googlePlaceController.getGooglePlace(
+			const placesResults = await googlePlaceController.getGooglePlace(
 				latitude,
 				longitude,
 				radius,
@@ -98,12 +141,12 @@ const placeTypeQueryFlow = async (payload) => {
 				additionParams
 			);
 
-			allMoodPlacesResults.push(moodPlacesResults);
+			allPlaceResults.push(placesResults);
 		}
 
 		// form route suggestions
 		const routes = routesSuggestController.routeSuggest(
-			allMoodPlacesResults,
+			allPlaceResults,
 			latitude,
 			longitude,
 			duration
