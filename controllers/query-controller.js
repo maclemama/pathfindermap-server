@@ -3,11 +3,14 @@ const {
 	checkFilledAllFieldObject,
 	checkEmptyObject,
 } = require("../utils/checkerUtils");
+const queryModel = require("../models/query");
 
 exports.createQuery = async (req, res) => {
 	const payload = req.body;
+	console.log(payload)
 	const requiredFields = [
 		"query_mode",
+		"max_route",
 		"duration",
 		"longitude",
 		"latitude",
@@ -23,9 +26,11 @@ exports.createQuery = async (req, res) => {
 	try {
 		checkEmptyObject(payload);
 		checkFilledAllFieldObject(payload, requiredFields);
+		
+		const createdQuery = await queryModel.create(payload);
 
 		// call different control flow service based on different "query_mode"
-		const results = await queryFlow[payload.query_mode](payload);
+		const results = await queryFlow[payload.query_mode](createdQuery);
 
 		res.json(results);
 	} catch (error) {

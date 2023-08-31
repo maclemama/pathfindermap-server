@@ -7,8 +7,8 @@ exports.up = function (knex) {
 		.createTable("place", (table) => {
 			table.uuid("id").defaultTo(knex.fn.uuid()).primary();
 			table.uuid("google_place_id").notNullable();
-			table.specificType('longitude', 'double precision').notNullable();
-			table.specificType('latitude', 'double precision').notNullable();
+			table.specificType("longitude", "double precision").notNullable();
+			table.specificType("latitude", "double precision").notNullable();
 			table.string("name").notNullable();
 			table.integer("waypoints_position").notNullable();
 			table.integer("rating").nullable();

@@ -3,6 +3,7 @@ const googleService = require("../services/google-service");
 const chatgptService = require("../services/chatgpt-service");
 const { getRandomElementsFromArray } = require("../utils/dataUtils");
 const { setError } = require("../utils/errorUtils");
+const queryModel = require("../models/query");
 
 const formatPlaceOutput = (placeData, startingLatLng) => {
 	const formattedPlace = [];
@@ -45,7 +46,7 @@ const formatPlaceOutput = (placeData, startingLatLng) => {
 
 const orderByBestPlace = (placeData) => {
 	const scoreWeight = {
-		distance: 60,
+		distance: 60, 
 		not_selected: 15,
 		rating: 25,
 	};
@@ -142,7 +143,7 @@ const routeSuggest = (placesAry, latitude, longitude, duration, max_route) => {
 };
 
 exports.keywordQueryFlow = async (payload) => {
-	const {
+	let {
 		query_keyword,
 		duration,
 		longitude,
@@ -150,9 +151,14 @@ exports.keywordQueryFlow = async (payload) => {
 		radius,
 		opennow_only,
 		max_route,
+		route_id
 	} = payload;
 
+
+	console.log(payload)
 	try {
+
+		query_keyword = query_keyword.split(",")
 		// get places for different keywords
 		const allKeywordPlacesResults = [];
 
@@ -204,6 +210,7 @@ exports.placeTypeQueryFlow = async (payload) => {
 		opennow_only,
 		max_route,
 		user_id,
+		route_id
 	} = payload;
 
 	try {

@@ -2,8 +2,6 @@ const ENV = process.env.ENV;
 
 exports.setError = (errorMessage, statusCode, nativeError) => {
 	let error = {};
-	console.log(errorMessage)
-	console.log(nativeError)
 
 	if (nativeError.message && nativeError.statusCode) {
 		error = nativeError;
