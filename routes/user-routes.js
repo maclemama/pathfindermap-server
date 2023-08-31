@@ -6,4 +6,7 @@ router.route("/register").post(userController.createUser);
 
 router.route("/verify").post(userController.verifyUser);
 
+router.route("/login").post(userController.loginUser);
+
+
 module.exports = router;

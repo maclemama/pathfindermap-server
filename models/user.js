@@ -49,14 +49,33 @@ exports.verify = async (verification_code) => {
 		const user = await knex("user")
 			.where({ verification_code: verification_code })
 			.first();
-		console.log(user);
+
 		if (!user) {
 			setError("Invalid verification code.", 400);
 			return;
 		}
+
 		await knex("user").where({ id: user.id }).update({ verified: true });
+
 		return;
 	} catch (error) {
 		setError("Error verifying user.", 500, error);
+	}
+};
+
+exports.get = async (filterObject) => {
+	try {
+		const user = await knex("user")
+			.where(filterObject)
+			.first();
+
+		if (!user) {
+			setError("No user found.", 400);
+			return;
+		}
+
+		return user;
+	} catch (error) {
+		setError("Error getting uesr.", 500, error);
 	}
 };
