@@ -1,7 +1,7 @@
 const { Client } = require("@googlemaps/google-maps-services-js");
 const { setTimeout } = require("timers/promises");
-const ENV = process.env.ENV;
 const client = new Client({});
+const { setError } = require("../utils/errorUtils");
 
 exports.getGooglePlace = async (lat, lng, radius, page, additionalOptions) => {
 	try {
@@ -43,11 +43,7 @@ exports.getGooglePlace = async (lat, lng, radius, page, additionalOptions) => {
 		}
 
 		return data;
-	} catch (err) {
-		console.error(err);
-		throw {
-			message: "Error getting Google Place data",
-			native_error: err,
-		};
+	} catch (error) {
+		setError("Error getting Google Place data", 500, error)
 	}
 };

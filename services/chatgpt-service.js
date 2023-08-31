@@ -8,7 +8,7 @@ const openai = new OpenAI({
 exports.getPlaceType = async (mood) => {
 	try {
 		const currentTime = getCurrentTimeFormatted();
-		
+
 		const chatResult = await openai.chat.completions.create({
 			messages: [
 				{
@@ -24,6 +24,7 @@ exports.getPlaceType = async (mood) => {
 			chatResult.choices &&
 			chatResult.choices[0] &&
 			chatResult.choices[0].message.content;
+
 		const placeTypes = JSON.parse(responseContent);
 
 		if (Array.isArray(placeTypes)) {
@@ -32,7 +33,6 @@ exports.getPlaceType = async (mood) => {
 			//return false to trigger using the mood input as a keyword to search google place in next step.
 			return false;
 		}
-
 	} catch (error) {
 		return false;
 	}
