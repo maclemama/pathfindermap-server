@@ -9,7 +9,7 @@ const {
 const { getRandomElementsFromArray } = require("../utils/dataUtils");
 
 const keywordQueryFlow = async (payload) => {
-	const { query_keyword, duration, longitude, latitude, radius, opennow_only } =
+	const { query_keyword, duration, longitude, latitude, radius, opennow_only, max_route } =
 		payload;
 
 	try {
@@ -42,7 +42,8 @@ const keywordQueryFlow = async (payload) => {
 			allKeywordPlacesResults,
 			latitude,
 			longitude,
-			duration
+			duration,
+			max_route
 		);
 
 		// return places data and route data
@@ -61,6 +62,7 @@ const placeTypeQueryFlow = async (payload) => {
 		latitude,
 		radius,
 		opennow_only,
+		max_route,
 		user_id,
 	} = payload;
 
@@ -149,7 +151,8 @@ const placeTypeQueryFlow = async (payload) => {
 			allPlaceResults,
 			latitude,
 			longitude,
-			duration
+			duration,
+			max_route
 		);
 
 		// return places data and route data

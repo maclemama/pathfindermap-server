@@ -2,7 +2,7 @@ module.exports = {
 	checkEmptyObject: (inputObj) => {
 		if (inputObj.constructor !== Object) {
 			throw {
-				message: "Error calculating routes",
+				message: "The input should be an object.",
 				statusCode: 400,
 			};
 		}
