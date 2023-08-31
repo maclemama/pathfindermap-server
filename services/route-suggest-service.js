@@ -45,9 +45,9 @@ const formatPlaceOutput = (placeData, startingLatLng) => {
 
 const orderByBestPlace = (placeData) => {
 	const scoreWeight = {
-		distance: 40,
-		not_selected: 20,
-		rating: 30,
+		distance: 60,
+		not_selected: 15,
+		rating: 25,
 	};
 	const newPlaceData = [...placeData];
 
