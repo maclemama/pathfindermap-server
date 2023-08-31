@@ -38,14 +38,14 @@ exports.create = async (payload) => {
 
 		const newQuery = getObjectValueByName(payload, allFields);
 		const newRecordIndex = await knex("query").insert([newQuery]);
-		const result = await knex("query")
+		const results = await knex("query")
 			.select(allFields)
 			.where({
 				id: newRecordIndex[0],
 			})
 			.first();
 
-		return result;
+		return results;
 	} catch (error) {
 		throw error; // handle error from service layer
 	}

@@ -22,11 +22,14 @@ const allFields = [
 exports.create = async (payload) => {
 	try {
 		const newRecordIndex = await knex("user").insert([payload]);
-		const result = {
-			success: true,
-			user_id: newRecordIndex[0],
-		};
-		return result;
+		const results = await knex("user")
+		.select(allFields)
+		.where({
+			id: newRecordIndex[0],
+		})
+		.first();
+
+		return results;
 	} catch (error) {
 		let errorMessage, statusCode;
 		if (error.code === "ER_DUP_ENTRY") {
@@ -40,3 +43,7 @@ exports.create = async (payload) => {
 		setError(errorMessage, statusCode, error);
 	}
 };
+
+exports.verifyUser = async ()=>{
+
+}
