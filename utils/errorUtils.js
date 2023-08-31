@@ -3,7 +3,7 @@ const ENV = process.env.ENV;
 exports.setError = (errorMessage, statusCode, nativeError) => {
 	let error = {};
 
-	if (nativeError.message && nativeError.statusCode) {
+	if (nativeError && nativeError.message && nativeError.statusCode) {
 		error = nativeError;
 	} else {
 		error.message = errorMessage ? errorMessage : "Unknown error.";
