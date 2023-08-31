@@ -10,7 +10,7 @@ exports.up = function (knex) {
 			table.string("first_name").notNullable();
 			table.string("last_name").notNullable();
 			table.string("password").notNullable();
-			table.string("email").notNullable();
+			table.string("email").notNullable().unique();
 			table.boolean("verified").defaultTo(false).notNullable();
 			table.uuid("verification_code").defaultTo(knex.fn.uuid());
 			table.timestamp("created_at").defaultTo(knex.fn.now());

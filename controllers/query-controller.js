@@ -7,7 +7,6 @@ const queryModel = require("../models/query");
 
 exports.createQuery = async (req, res) => {
 	const payload = req.body;
-	console.log(payload)
 	const requiredFields = [
 		"query_mode",
 		"max_route",
@@ -32,7 +31,7 @@ exports.createQuery = async (req, res) => {
 		// call different control flow service based on different "query_mode"
 		const results = await queryFlow[payload.query_mode](createdQuery);
 
-		res.json(results);
+		res.status(200).json(results);
 	} catch (error) {
 		res.status(error.statusCode ? error.statusCode : 500).json(error);
 	}

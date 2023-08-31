@@ -2,7 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 
-const queryRoutes = require('./routes/query-routes');
+const queryRoutes = require("./routes/query-routes");
+const userRoutes = require("./routes/user-routes");
 
 const ENV = process.env.ENV;
 const PORT = ENV === "PROD" ? "" : process.env.PORT || 8080;
@@ -14,8 +15,8 @@ app.use(express.json());
 
 app.use(cors());
 
-
-app.use('/query', queryRoutes);
+app.use("/user", userRoutes);
+app.use("/query", queryRoutes);
 
 app.listen(PORT, () => {
 	console.log(`Server is running on ${HOST}${ENV === "DEV" ? ":" : ""}${PORT}`);

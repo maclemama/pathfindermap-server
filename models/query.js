@@ -36,11 +36,8 @@ exports.create = async (payload) => {
 		checkEmptyObject(payload);
 		checkFilledAllFieldObject(payload, requiredFields);
 
-
 		const newQuery = getObjectValueByName(payload, allFields);
-		console.log(newQuery)
 		const newRecordIndex = await knex("query").insert([newQuery]);
-		console.log(newRecordIndex)
 		const result = await knex("query")
 			.select(allFields)
 			.where({
