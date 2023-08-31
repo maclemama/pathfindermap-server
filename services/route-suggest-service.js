@@ -154,8 +154,6 @@ exports.keywordQueryFlow = async (payload) => {
 		route_id
 	} = payload;
 
-
-	console.log(payload)
 	try {
 
 		query_keyword = query_keyword.split(",")

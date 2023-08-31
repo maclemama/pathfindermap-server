@@ -12,8 +12,6 @@ exports.getGooglePlace = async (lat, lng, radius, page, additionalOptions) => {
 			...additionalOptions,
 		};
 
-		console.log(params)
-
 		const { data } = await client.placesNearby({ params: params });
 
 		// handle requests with more than 1 page (20 results)
