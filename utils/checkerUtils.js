@@ -34,7 +34,7 @@ exports.checkFilledAllFieldObject = (inputObj, requiredFieldsAry) => {
 };
 
 exports.checkValidEmail = (email) => {
-	let emailReg = new RegExp("^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,})$");
+	let emailReg = new RegExp("^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+[.][a-zA-Z]{2,})$");
 	let validEmail = emailReg.test(email);
 	if (!validEmail) {
 		throw {

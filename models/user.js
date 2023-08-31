@@ -1,4 +1,6 @@
 const knex = require("knex")(require("../knexfile"));
+const { setError } = require("../utils/errorUtils");
+
 const {
 	checkEmptyObject,
 	checkFilledAllFieldObject,
@@ -26,6 +28,15 @@ exports.create = async (payload) => {
 		};
 		return result;
 	} catch (error) {
-		throw error;
+		let errorMessage, statusCode;
+		if (error.code === "ER_DUP_ENTRY") {
+			errorMessage =
+				"The same email has been registered. Please use the email to signin instead.";
+			statusCode = 400;
+		} else {
+			errorMessage = "Error register user.";
+			statusCode = "500";
+		}
+		setError(errorMessage, statusCode, error);
 	}
 };

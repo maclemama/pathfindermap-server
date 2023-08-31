@@ -19,7 +19,6 @@ exports.up = function (knex) {
 				.defaultTo(knex.raw("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"));
 		})
 		.createTable("query", (table) => {
-			// table.uuid("id").notNullable().primary().defaultTo(knex.fn.uuid());
 			table.increments("id").primary();
 			table.integer("user_id").unsigned().nullable();
 			table.string("query_mode").notNullable();
