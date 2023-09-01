@@ -1,7 +1,6 @@
 module.exports = [
 	{
 		id: 1,
-		query_id: 1,
 		user_id: 1,
 		duration: 50,
         longitude: 50.23424,
@@ -9,7 +8,6 @@ module.exports = [
 	},
 	{
 		id: 2,
-		query_id: 2,
 		user_id: 2,
 		duration: 30,
 		longitude: -73.98745,
@@ -17,7 +15,6 @@ module.exports = [
 	},
 	{
 		id: 3,
-		query_id: 3,
 		user_id: 3,
 		duration: 75,
 		longitude: 2.2945,
@@ -25,7 +22,6 @@ module.exports = [
 	},
 	{
 		id: 4,
-		query_id: 4,
 		user_id: 4,
 		duration: 60,
 		longitude: -118.2437,
@@ -33,7 +29,6 @@ module.exports = [
 	},
 	{
 		id: 5,
-		query_id: 5,
 		user_id: 1,
 		duration: 45,
 		longitude: -0.1278,

@@ -1,12 +1,6 @@
 const knex = require("knex")(require("../knexfile"));
 const { setError } = require("../utils/errorUtils");
 
-const {
-	checkEmptyObject,
-	checkFilledAllFieldObject,
-} = require("../utils/checkerUtils");
-const { getObjectValueByName } = require("../utils/dataUtils");
-
 const allFields = [
 	"id",
 	"user_name",

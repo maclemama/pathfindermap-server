@@ -2,6 +2,7 @@ module.exports = [
 	{
 		id: 1,
 		google_place_id: "ChIJZQDO_N4HdkgRDd0qDHWWtio",
+		route_id:1,
 		longitude: -0.1839533,
 		latitude: 51.37114039999999,
 		name: "Benhill Crescent Horticultural Society",
@@ -15,6 +16,7 @@ module.exports = [
 	{
 		id: 2,
 		google_place_id: "ChIJs5oWQdIJdkgRsNfmLJvAiPU",
+		route_id:2,
 		longitude: -0.1951251,
 		latitude: 51.3703544,
 		name: "Victoria Gardens",
@@ -26,6 +28,7 @@ module.exports = [
 	{
 		id: 3,
 		google_place_id: "ChIJZ7YEV3kJdkgRNWizbj482nE",
+		route_id:3,
 		longitude: -0.1960734,
 		latitude: 51.3621931,
 		name: "Dr George Rice Community Garden",
@@ -39,6 +42,7 @@ module.exports = [
 	{
 		id: 4,
 		google_place_id: "ChIJvQYkKhAJdkgRRrOos-XDME8",
+		route_id:4,
 		longitude: -0.2031383,
 		latitude: 51.36500179999999,
 		name: "Molina Garden Design",
@@ -52,6 +56,7 @@ module.exports = [
 	{
 		id: 5,
 		google_place_id: "ChIJOYggyD0IdkgRc9_lxvJDw4o",
+		route_id:5,
 		longitude: -0.2128247,
 		latitude: 51.3614069,
 		name: "Seears Park",

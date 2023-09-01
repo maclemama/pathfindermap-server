@@ -44,7 +44,6 @@ exports.up = function (knex) {
 		.createTable("route", (table) => {
 			table.uuid("id").notNullable().primary();
 			table.integer("user_id").unsigned().nullable();
-			table.integer("query_id").unsigned().notNullable();
 			table.specificType('longitude', 'double precision').notNullable();
 			table.specificType('latitude', 'double precision').notNullable();
 			table.integer("duration").notNullable();
@@ -54,11 +53,6 @@ exports.up = function (knex) {
 			table
 				.timestamp("updated_at")
 				.defaultTo(knex.raw("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"));
-			table
-				.foreign("query_id")
-				.references("id")
-				.inTable("query")
-				.onDelete("CASCADE");
 			table
 				.foreign("user_id")
 				.references("id")

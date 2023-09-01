@@ -30,7 +30,6 @@ exports.geteUser = async (req, res) => {
 
 		res.status(200).json(user);
 	} catch (error) {
-		console.log(error);
-		res.status(401).send("Invalid auth token");
+		res.status(error.statusCode ? error.statusCode : 500).json(error);
 	}
 };

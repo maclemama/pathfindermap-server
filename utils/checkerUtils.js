@@ -14,6 +14,22 @@ exports.checkEmptyObject = (inputObj) => {
 	return;
 };
 
+exports.checkEmptyArray = (inputAry) => {
+	if (!Array.isArray(inputAry)) {
+		throw {
+			message: "The input should be an Array.",
+			statusCode: 400,
+		};
+	}
+	if (!inputAry[0]) {
+		throw {
+			message: "The input should not be empty.",
+			statusCode: 400,
+		};
+	}
+	return;
+};
+
 exports.checkFilledAllFieldObject = (inputObj, requiredFieldsAry) => {
 	const notFound = [];
 	let allFilled = true;
