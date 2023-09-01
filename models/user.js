@@ -63,9 +63,10 @@ exports.verify = async (verification_code) => {
 	}
 };
 
-exports.get = async (filterObject) => {
+exports.get = async (filterObject, selectFields) => {
 	try {
 		const user = await knex("user")
+			.select(selectFields)
 			.where(filterObject)
 			.first();
 
