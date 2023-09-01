@@ -3,9 +3,8 @@ const googleService = require("../services/google-service");
 const chatgptService = require("../services/chatgpt-service");
 const { getRandomElementsFromArray } = require("../utils/dataUtils");
 const { setError } = require("../utils/errorUtils");
-const queryModel = require("../models/query");
 
-const formatPlaceOutput = (placeData, startingLatLng) => {
+const formatPlaceOutput = (placeData, startingLatLng, keyword) => {
 	const formattedPlace = [];
 
 	for (const place in placeData) {
@@ -19,7 +18,7 @@ const formatPlaceOutput = (placeData, startingLatLng) => {
 		const distance = getDistance(startingLatLng, thisLatLng);
 		const walkingTimeMinute = Math.floor(distance / 80); //80m is average walking distance per mintue
 
-		const placeOutput = {
+		let placeOutput = {
 			latitude: thisLatLng.latitude,
 			longitude: thisLatLng.longitude,
 			open_now: thisPlace.opening_hours ? thisPlace.opening_hours.open_now : "",
@@ -38,6 +37,10 @@ const formatPlaceOutput = (placeData, startingLatLng) => {
 			is_selected: false,
 		};
 
+		if (keyword) {
+			placeOutput.query_keyword = keyword;
+		}
+
 		formattedPlace.push(placeOutput);
 	}
 
@@ -46,7 +49,7 @@ const formatPlaceOutput = (placeData, startingLatLng) => {
 
 const orderByBestPlace = (placeData) => {
 	const scoreWeight = {
-		distance: 60, 
+		distance: 60,
 		not_selected: 15,
 		rating: 25,
 	};
@@ -91,11 +94,16 @@ const routeSuggest = (placesAry, latitude, longitude, duration, max_route) => {
 
 		for (const waypoint in placesAry) {
 			const thisWaypoint = placesAry[waypoint];
+			const keyword = thisWaypoint.keyword;
 
 			// check api response status for this layer of waypoints
 			if (thisWaypoint.status === "OK") {
 				const thisPlaces = thisWaypoint.results;
-				const formattedPlaces = formatPlaceOutput(thisPlaces, centerLatLng);
+				const formattedPlaces = formatPlaceOutput(
+					thisPlaces,
+					centerLatLng,
+					keyword
+				);
 				const bestPlaces = orderByBestPlace(formattedPlaces);
 
 				firstLayerWaypoints = bestPlaces.slice(0, maxRoute);
@@ -107,6 +115,9 @@ const routeSuggest = (placesAry, latitude, longitude, duration, max_route) => {
 		const routes = firstLayerWaypoints.map((firstSuggestion) => {
 			const suggestedRoute = {
 				route_duration: firstSuggestion.walking_time,
+				longitude: longitude,
+				latitude: latitude,
+				user_saved: false,
 				route_waypoints: [firstSuggestion],
 			};
 			let startingLatLng = firstSuggestion;
@@ -117,13 +128,15 @@ const routeSuggest = (placesAry, latitude, longitude, duration, max_route) => {
 				i++
 			) {
 				const thisWaypoint = placesAry[i];
+				const keyword = thisWaypoint.keyword;
 				if (
 					thisWaypoint.status === "OK" &&
 					suggestedRoute.route_duration < duration
 				) {
 					const formattedPlaces = formatPlaceOutput(
 						thisWaypoint.results,
-						startingLatLng
+						startingLatLng,
+						keyword
 					);
 					const bestPlace = orderByBestPlace(formattedPlaces)[0];
 					suggestedRoute.route_waypoints.push(bestPlace);
@@ -138,7 +151,7 @@ const routeSuggest = (placesAry, latitude, longitude, duration, max_route) => {
 
 		return routes;
 	} catch (error) {
-		setError("Error calculating routes", 500, error)
+		setError("Error calculating routes", 500, error);
 	}
 };
 
@@ -151,12 +164,10 @@ exports.keywordQueryFlow = async (payload) => {
 		radius,
 		opennow_only,
 		max_route,
-		route_id
 	} = payload;
 
 	try {
-
-		query_keyword = query_keyword.split(",")
+		query_keyword = query_keyword.split(",");
 		// get places for different keywords
 		const allKeywordPlacesResults = [];
 
@@ -168,7 +179,7 @@ exports.keywordQueryFlow = async (payload) => {
 			if (opennow_only) {
 				additionParams.opennow = true;
 			}
-			const keywordPlaceResult = await googleService.getGooglePlace(
+			let keywordPlaceResult = await googleService.getGooglePlace(
 				latitude,
 				longitude,
 				radius,
@@ -193,7 +204,7 @@ exports.keywordQueryFlow = async (payload) => {
 		// return places data and route data
 		return routes;
 	} catch (error) {
-		setError("Error calculating routes", 500, error)
+		setError("Error calculating routes", 500, error);
 	}
 };
 
@@ -207,8 +218,6 @@ exports.placeTypeQueryFlow = async (payload) => {
 		radius,
 		opennow_only,
 		max_route,
-		user_id,
-		route_id
 	} = payload;
 
 	try {
@@ -303,6 +312,6 @@ exports.placeTypeQueryFlow = async (payload) => {
 		// return places data and route data
 		return routes;
 	} catch (error) {
-		setError("Error calculating routes", 500, error)
+		setError("Error calculating routes", 500, error);
 	}
 };

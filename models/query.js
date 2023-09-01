@@ -25,7 +25,6 @@ const allFields = [
 	"latitude",
 	"query_keyword",
 	"query_mood",
-	"route_id",
 	"max_route",
 	"created_at",
 	"updated_at",

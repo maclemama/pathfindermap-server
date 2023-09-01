@@ -22,6 +22,11 @@ const allFields = [
 	"vicinity",
 	"photo_reference",
 	"query_keyword",
+	"rating",
+	"user_ratings_total",
+	"walking_time",
+	"distance",
+	"place_score",
 	"created_at",
 	"updated_at",
 ];
@@ -38,5 +43,20 @@ exports.get = async (filter) => {
 		return routes;
 	} catch (error) {
 		setError("Error getting uesr.", 500, error);
+	}
+};
+
+exports.create = async (payload) => {
+	try {
+		const newRecordIndex = await knex("place").insert([payload]);
+		const results = await knex("place")
+			.where({
+				id: newRecordIndex[0],
+			})
+			.first();
+
+		return results;
+	} catch (error) {
+		setError("Error creating route.", 500, error);
 	}
 };

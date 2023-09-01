@@ -30,7 +30,7 @@ exports.up = function (knex) {
 			table.specificType('latitude', 'double precision').notNullable();
 			table.string("query_keyword").nullable();
 			table.string("query_mood").nullable();
-			table.uuid("route_id").nullable().defaultTo(knex.fn.uuid());
+			// table.uuid("route_id").nullable().defaultTo(knex.fn.uuid());
 			table.timestamp("created_at").defaultTo(knex.fn.now());
 			table
 				.timestamp("updated_at")
@@ -42,7 +42,7 @@ exports.up = function (knex) {
 				.onDelete("CASCADE");
 		})
 		.createTable("route", (table) => {
-			table.uuid("id").notNullable().primary();
+			table.increments("id").primary();
 			table.integer("user_id").unsigned().nullable();
 			table.specificType('longitude', 'double precision').notNullable();
 			table.specificType('latitude', 'double precision').notNullable();

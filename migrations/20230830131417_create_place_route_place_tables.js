@@ -4,7 +4,7 @@
  */
 exports.up = function (knex) {
 	return knex.schema.createTable("place", (table) => {
-		table.uuid("id").defaultTo(knex.fn.uuid()).primary();
+		table.increments("id").primary();
 		table.string("google_place_id").notNullable();
 		table.specificType("longitude", "double precision").notNullable();
 		table.specificType("latitude", "double precision").notNullable();
@@ -14,8 +14,13 @@ exports.up = function (knex) {
 		table.string("vicinity").nullable();
 		table.string("photo_reference").nullable();
 		table.string("query_keyword").nullable();
+		table.integer("user_ratings_total").nullable();
+		table.integer("walking_time").nullable();
+		table.integer("distance").nullable();
+		table.integer("place_score").nullable();
 		table
-			.uuid("route_id")
+			.integer("route_id")
+			.unsigned()
 			.notNullable()
 			.references("route.id")
 			.onDelete("CASCADE");

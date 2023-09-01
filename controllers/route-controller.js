@@ -1,4 +1,8 @@
-const { checkEmptyArray } = require("../utils/checkerUtils");
+const {
+	checkEmptyArray,
+	checkEmptyObject,
+	checkFilledAllFieldObject,
+} = require("../utils/checkerUtils");
 const jwt = require("jsonwebtoken");
 const routeModel = require("../models/route");
 const placeModel = require("../models/place");
@@ -33,6 +37,7 @@ exports.getRoute = async (req, res) => {
 				}
 				const routeOutput = {
 					route_duration: route.duration,
+					route_id: route.id,
 					longitude: route.longitude,
 					latitude: route.latitude,
 					user_saved: !!route.user_saved,
@@ -40,7 +45,7 @@ exports.getRoute = async (req, res) => {
 				};
 
 				const places = await placeModel.get({ route_id: route.id });
-		
+
 				const allPlaces = places.map(
 					({
 						longitude,
@@ -51,6 +56,11 @@ exports.getRoute = async (req, res) => {
 						vicinity,
 						photo_reference,
 						query_keyword,
+						rating,
+						user_ratings_total,
+						distance,
+						walking_time,
+						place_score,
 					}) => {
 						return {
 							query_keyword,
@@ -61,6 +71,11 @@ exports.getRoute = async (req, res) => {
 							name,
 							vicinity,
 							photo_reference,
+							rating,
+							user_ratings_total,
+							distance,
+							walking_time,
+							place_score
 						};
 					}
 				);
@@ -73,5 +88,20 @@ exports.getRoute = async (req, res) => {
 		res.status(200).json(results);
 	} catch (error) {
 		res.status(error.statusCode ? error.statusCode : 500).json(error);
+	}
+};
+
+exports.createRoute = async (payload) => {
+	const requiredFields = ["longitude", "latitude", "duration"];
+
+	try {
+		checkEmptyObject(payload);
+		checkFilledAllFieldObject(payload, requiredFields);
+
+		const route = await routeModel.create(payload);
+
+		return route.id;
+	} catch (error) {
+		throw error;
 	}
 };

@@ -10,7 +10,6 @@ module.exports = [
 		longitude: 50.23424,
 		latitude: -0.5123123,
 		query_keyword: "park,lunch,tesco",
-		route_id: 1,
 	},
 	{
         id: 2,
@@ -23,7 +22,6 @@ module.exports = [
 		longitude: -73.98745,
 		latitude: 40.748817,
 		query_mood: "relax",
-		route_id: 2,
 	},
 	{
         id: 3,
@@ -36,7 +34,6 @@ module.exports = [
 		longitude: 2.2945,
 		latitude: 48.858844,
 		query_mood: "excited",
-		route_id: 3,
 	},
 	{
         id: 4,
@@ -49,7 +46,6 @@ module.exports = [
 		longitude: -118.2437,
 		latitude: 34.0522,
 		query_keyword: "coffee,bookstore",
-		route_id: 4,
 	},
 	{
         id: 5,
@@ -62,6 +58,5 @@ module.exports = [
 		longitude: -0.1278,
 		latitude: 51.5074,
 		query_mood: "calm",
-		route_id: 5,
 	},
 ];
