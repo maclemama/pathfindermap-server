@@ -84,7 +84,7 @@ exports.loginUser = async (req, res) => {
 		checkFilledAllFieldObject(payload, requiredFields);
 
 		// Find the user
-		const user = await userModel.get({ email, email });
+		const user = await userModel.get({ email, email },["id", "verified", "password", "email"]);
 
 		// Check if user verified
 		if(!user.verified){
