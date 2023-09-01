@@ -25,7 +25,10 @@ exports.getRoute = async (req, res) => {
 		const decodedToken = jwt.verify(authToken, process.env.JWT_KEY);
 		const userID = Number(decodedToken.id);
 
-		const allRoutes = await routeModel.get({ user_id: userID, user_saved: true });
+		const allRoutes = await routeModel.get({
+			user_id: userID,
+			user_saved: true,
+		});
 
 		const recordsPerPage = 10;
 		const totalPage =
@@ -141,5 +144,44 @@ exports.createRoute = async (payload) => {
 		return route.id;
 	} catch (error) {
 		throw error;
+	}
+};
+
+exports.saveUnsaveRoute = async (req, res) => {
+	// if there is no auth header provided
+	if (!req.headers.authorization) {
+		res.status(401).send("Please login");
+		return;
+	}
+
+	const action = req.params.action;
+	console.log(action);
+	const routeID = req.params.route_id;
+
+	// parse the bearer token
+	const authToken = req.headers.authorization.split(" ")[1];
+
+	try {
+		// verify the token
+		const decodedToken = jwt.verify(authToken, process.env.JWT_KEY);
+		const userID = Number(decodedToken.id);
+		let toggle
+		if(action === "save"){
+			toggle = true;
+		}
+
+		if(action === "unsave"){
+			toggle = false;
+		}
+		
+		const allRoutes = await routeModel.saveUnsave(routeID,toggle );
+
+		// return data
+		res.status(200).json({
+			success: true,
+		});
+	} catch (error) {
+		console.log(error);
+		res.status(error.statusCode ? error.statusCode : 500).json(error);
 	}
 };

@@ -64,8 +64,6 @@ exports.createQuery = async (req, res) => {
 			})
 		);
 
-		// console.log(createdRoutePlace)
-
 		res.status(200).json(results);
 	} catch (error) {
 		res.status(error.statusCode ? error.statusCode : 500).json(error);

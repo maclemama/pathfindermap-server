@@ -51,3 +51,17 @@ exports.create = async (payload) => {
 		setError("Error creating route.", 500, error);
 	}
 };
+
+exports.saveUnsave = async (routeID, saveUnsave) => {
+	try {
+		const result = await knex("route").update({user_saved:saveUnsave}).where({ id: routeID });
+
+		if (!result) {
+			setError("No matching route found", 404);
+		}
+	
+		return result;
+	} catch (error) {
+		setError("Error getting uesr.", 500, error);
+	}
+};
