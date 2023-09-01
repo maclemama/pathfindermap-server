@@ -1,7 +1,7 @@
 const knex = require("knex")(require("../knexfile"));
 const { setError } = require("../utils/errorUtils");
 
-const requiredFields = [ "longitude", "latitude", "duration"];
+const requiredFields = ["longitude", "latitude", "duration"];
 
 const allFields = [
 	"id",
@@ -15,14 +15,21 @@ const allFields = [
 	"updated_at",
 ];
 
-exports.get = async (routeIDs) => {
+exports.getByID = async (routeIDs) => {
 	try {
 		const routes = await knex("route").whereIn("id", routeIDs);
 
-		if (!routes) {
-			setError("No route found.", 400);
-			return;
-		}
+		return routes;
+	} catch (error) {
+		setError("Error getting uesr.", 500, error);
+	}
+};
+
+exports.get = async (filter) => {
+	try {
+		const routes = await knex("route")
+			.where(filter)
+			.orderBy("created_at", "desc");
 
 		return routes;
 	} catch (error) {

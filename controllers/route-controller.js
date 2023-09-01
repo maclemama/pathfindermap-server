@@ -15,6 +15,44 @@ exports.getRoute = async (req, res) => {
 		return;
 	}
 
+	const pageID = Number(req.params.page);
+
+	// parse the bearer token
+	const authToken = req.headers.authorization.split(" ")[1];
+
+	try {
+		// verify the token
+		const decodedToken = jwt.verify(authToken, process.env.JWT_KEY);
+		const userID = Number(decodedToken.id);
+
+		const allRoutes = await routeModel.get({ user_id: userID, user_saved: true });
+
+		const recordsPerPage = 10;
+		const totalPage =
+			allRoutes.length === 0 ? 0 : Math.ceil(allRoutes.length / recordsPerPage);
+
+		const results = {
+			total_page: totalPage,
+			current_page: pageID,
+			next_page: pageID >= totalPage ? false : pageID + 1,
+			data: allRoutes,
+		};
+
+		// return data
+		res.status(200).json(results);
+	} catch (error) {
+		console.log(error);
+		res.status(error.statusCode ? error.statusCode : 500).json(error);
+	}
+};
+
+exports.getRouteDetails = async (req, res) => {
+	// if there is no auth header provided
+	if (!req.headers.authorization) {
+		res.status(401).send("Please login");
+		return;
+	}
+
 	// parse the bearer token
 	const authToken = req.headers.authorization.split(" ")[1];
 
@@ -28,7 +66,7 @@ exports.getRoute = async (req, res) => {
 		checkEmptyArray(routeIDs);
 
 		// get route and place data
-		const routes = await routeModel.get(routeIDs);
+		const routes = await routeModel.getByID(routeIDs);
 
 		const results = await Promise.all(
 			routes.map(async (route) => {
@@ -75,7 +113,7 @@ exports.getRoute = async (req, res) => {
 							user_ratings_total,
 							distance,
 							walking_time,
-							place_score
+							place_score,
 						};
 					}
 				);
