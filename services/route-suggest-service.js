@@ -253,7 +253,7 @@ exports.placeTypeQueryFlow = async (payload) => {
 				"tourist_attraction",
 				"zoo",
 			];
-			placeType = getRandomElementsFromArray(allRecommendedPlaceTypes, 10);
+			placeType = getRandomElementsFromArray(allRecommendedPlaceTypes, 5);
 		}
 
 		// get places for different keywords

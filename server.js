@@ -17,8 +17,13 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/user", userRoutes);
+
 app.use("/query", queryRoutes);
+
 app.use("/route", routeRoutes);
+
+// serve static assets
+app.use(express.static("public"))
 
 app.listen(PORT, () => {
 	console.log(`Server is running on ${HOST}${ENV === "DEV" ? ":" : ""}${PORT}`);
