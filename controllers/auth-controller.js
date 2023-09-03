@@ -39,7 +39,7 @@ exports.createUser = async (req, res) => {
 			email,
 			"verify",
 			{
-				verification_url: `${process.env.DEV_HOST}:${process.env.PORT}/user/verify/${results.verification_code}`,
+				verification_url: `${process.env.DEV_HOST}:${process.env.CLIENT_PORT}/user/verify/${results.verification_code}`,
 			}
 		);
 
