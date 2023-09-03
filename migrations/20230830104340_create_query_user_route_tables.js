@@ -6,7 +6,6 @@ exports.up = function (knex) {
 	return knex.schema
 		.createTable("user", (table) => {
 			table.increments("id").primary();
-			table.string("user_name").notNullable();
 			table.string("first_name").notNullable();
 			table.string("last_name").notNullable();
 			table.string("password").notNullable();
@@ -30,7 +29,6 @@ exports.up = function (knex) {
 			table.specificType('latitude', 'double precision').notNullable();
 			table.string("query_keyword").nullable();
 			table.string("query_mood").nullable();
-			// table.uuid("route_id").nullable().defaultTo(knex.fn.uuid());
 			table.timestamp("created_at").defaultTo(knex.fn.now());
 			table
 				.timestamp("updated_at")

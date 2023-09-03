@@ -12,7 +12,6 @@ const { setError } = require("../utils/errorUtils");
 exports.createUser = async (req, res) => {
 	const payload = req.body;
 	const requiredFields = [
-		"user_name",
 		"first_name",
 		"last_name",
 		"password",
@@ -20,14 +19,13 @@ exports.createUser = async (req, res) => {
 	];
 
 	try {
-		const { user_name, first_name, last_name, password, email } = req.body;
+		const { first_name, last_name, password, email } = req.body;
 		checkEmptyObject(payload);
 		checkFilledAllFieldObject(payload, requiredFields);
 		checkValidEmail(email);
 
 		const hashedPassword = bcrypt.hashSync(password);
 		const newUser = {
-			user_name,
 			first_name,
 			last_name,
 			email,

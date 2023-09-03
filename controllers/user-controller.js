@@ -23,7 +23,6 @@ exports.geteUser = async (req, res) => {
 		// Respond user data
 		const user = await userModel.get({ id: decodedToken.id }, [
 			"id",
-			"user_name",
 			"first_name",
 			"last_name",
 		]);
