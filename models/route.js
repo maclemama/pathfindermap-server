@@ -29,7 +29,7 @@ exports.get = async (filter) => {
 	try {
 		const routes = await knex("route")
 			.where(filter)
-			.orderBy("created_at", "desc");
+			.orderBy("created_at", "asc");
 
 		return routes;
 	} catch (error) {

@@ -34,11 +34,13 @@ exports.getRoute = async (req, res) => {
 		const totalPage =
 			allRoutes.length === 0 ? 0 : Math.ceil(allRoutes.length / recordsPerPage);
 
+		const resultRoutes = [...allRoutes].splice((pageID * 10 - 10), 10);
+
 		const results = {
 			total_page: totalPage,
 			current_page: pageID,
 			next_page: pageID >= totalPage ? false : pageID + 1,
-			data: allRoutes,
+			data: resultRoutes,
 		};
 
 		// return data
