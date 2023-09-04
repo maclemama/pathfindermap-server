@@ -61,10 +61,11 @@ const orderByBestPlace = (placeData) => {
 	);
 
 	newPlaceData.forEach((place, index) => {
+		console.log(place)
 		const distanceScore =
 			((index + 1) / newPlaceData.length) * scoreWeight.distance;
 		let ratingScore;
-		if (place.user_ratings_total === 0) {
+		if (place.user_ratings_total === 0 || !place.rating) {
 			ratingScore = scoreWeight.rating / 2;
 		} else {
 			ratingScore = (place.rating / 5) * scoreWeight.rating;
