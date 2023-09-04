@@ -61,7 +61,6 @@ const orderByBestPlace = (placeData) => {
 	);
 
 	newPlaceData.forEach((place, index) => {
-		console.log(place)
 		const distanceScore =
 			((index + 1) / newPlaceData.length) * scoreWeight.distance;
 		let ratingScore;

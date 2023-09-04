@@ -44,7 +44,6 @@ exports.getRoute = async (req, res) => {
 		// return data
 		res.status(200).json(results);
 	} catch (error) {
-		console.log(error);
 		res.status(error.statusCode ? error.statusCode : 500).json(error);
 	}
 };
@@ -155,7 +154,6 @@ exports.saveUnsaveRoute = async (req, res) => {
 	}
 
 	const action = req.params.action;
-	console.log(action);
 	const routeID = req.params.route_id;
 
 	// parse the bearer token
@@ -181,7 +179,6 @@ exports.saveUnsaveRoute = async (req, res) => {
 			success: true,
 		});
 	} catch (error) {
-		console.log(error);
 		res.status(error.statusCode ? error.statusCode : 500).json(error);
 	}
 };
