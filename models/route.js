@@ -54,9 +54,9 @@ exports.create = async (payload) => {
 
 exports.saveUnsave = async (routeID, saveUnsave) => {
 	try {
-		const result = await knex("route").update({user_saved:saveUnsave}).where({ id: routeID });
-
-		if (!result) {
+		const updataResult = await knex("route").update({user_saved:saveUnsave}).where({ id: routeID });
+		const result = await knex("route").select("user_saved").where({ id: routeID });
+		if (!updataResult) {
 			setError("No matching route found", 404);
 		}
 	

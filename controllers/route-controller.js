@@ -179,11 +179,11 @@ exports.saveUnsaveRoute = async (req, res) => {
 			toggle = false;
 		}
 		
-		const allRoutes = await routeModel.saveUnsave(routeID,toggle );
+		const result = await routeModel.saveUnsave(routeID,toggle );
 
 		// return data
 		res.status(200).json({
-			success: true,
+			user_saved: !!result[0].user_saved,
 		});
 	} catch (error) {
 		res.status(error.statusCode ? error.statusCode : 500).json(error);
