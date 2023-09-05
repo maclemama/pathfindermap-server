@@ -39,7 +39,7 @@ Install dependencies
   npm install
 ```
 
-Create a mySQL database locally with database of your choice
+Create a mySQL database locally with database name of your choice
 
 Create environment file detailed in the .env.sample
 
