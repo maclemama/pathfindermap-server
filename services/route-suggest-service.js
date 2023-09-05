@@ -4,7 +4,7 @@ const chatgptService = require("../services/chatgpt-service");
 const { getRandomElementsFromArray } = require("../utils/dataUtils");
 const { setError } = require("../utils/errorUtils");
 
-const formatPlaceOutput = (placeData, startingLatLng, keyword) => {
+const formatPlaceOutput = (placeData, startingLatLng, keyword, query_mood) => {
 	const formattedPlace = [];
 
 	for (const place in placeData) {
@@ -39,6 +39,10 @@ const formatPlaceOutput = (placeData, startingLatLng, keyword) => {
 
 		if (keyword) {
 			placeOutput.query_keyword = keyword;
+		}
+
+		if(query_mood){
+			placeOutput.query_mood = query_mood;
 		}
 
 		formattedPlace.push(placeOutput);
@@ -83,7 +87,7 @@ const orderByBestPlace = (placeData) => {
 	return newPlaceData;
 };
 
-const routeSuggest = (placesAry, latitude, longitude, duration, max_route) => {
+const routeSuggest = (placesAry, latitude, longitude, duration, max_route, query_mood) => {
 	try {
 		const maxRoute = max_route;
 		const centerLatLng = { latitude: latitude, longitude: longitude };
@@ -102,7 +106,8 @@ const routeSuggest = (placesAry, latitude, longitude, duration, max_route) => {
 				const formattedPlaces = formatPlaceOutput(
 					thisPlaces,
 					centerLatLng,
-					keyword
+					keyword,
+					query_mood
 				);
 				const bestPlaces = orderByBestPlace(formattedPlaces);
 
@@ -136,7 +141,8 @@ const routeSuggest = (placesAry, latitude, longitude, duration, max_route) => {
 					const formattedPlaces = formatPlaceOutput(
 						thisWaypoint.results,
 						startingLatLng,
-						keyword
+						keyword,
+						query_mood
 					);
 					const bestPlace = orderByBestPlace(formattedPlaces)[0];
 					suggestedRoute.route_waypoints.push(bestPlace);
@@ -253,7 +259,7 @@ exports.placeTypeQueryFlow = async (payload) => {
 				"tourist_attraction",
 				"zoo",
 			];
-			placeType = getRandomElementsFromArray(allRecommendedPlaceTypes, 5);
+			placeType = getRandomElementsFromArray(allRecommendedPlaceTypes, 4);
 		}
 
 		// get places for different keywords
@@ -306,7 +312,8 @@ exports.placeTypeQueryFlow = async (payload) => {
 			latitude,
 			longitude,
 			duration,
-			max_route
+			max_route,
+			query_mode
 		);
 
 		// return places data and route data
