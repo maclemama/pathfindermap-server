@@ -21,6 +21,7 @@ exports.createPlace = async (places, routeID) => {
 					vicinity: place.vicinity,
 					photo_reference: place.photo_reference,
 					query_keyword: place.query_keyword,
+					query_mood: place.query_mood,
 					waypoints_position: index,
 					rating: place.rating,
 					user_ratings_total: place.user_ratings_total,

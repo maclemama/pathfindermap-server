@@ -22,6 +22,7 @@ const allFields = [
 	"vicinity",
 	"photo_reference",
 	"query_keyword",
+	"query_mood",
 	"rating",
 	"user_ratings_total",
 	"walking_time",

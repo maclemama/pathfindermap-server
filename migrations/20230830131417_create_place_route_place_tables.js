@@ -14,6 +14,7 @@ exports.up = function (knex) {
 		table.string("vicinity").nullable();
 		table.string("photo_reference").nullable();
 		table.string("query_keyword").nullable();
+		table.string("query_mood").nullable();
 		table.integer("user_ratings_total").nullable();
 		table.integer("walking_time").nullable();
 		table.integer("distance").nullable();

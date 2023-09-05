@@ -83,6 +83,7 @@ exports.getRouteDetails = async (req, res) => {
 					longitude: route.longitude,
 					latitude: route.latitude,
 					user_saved: !!route.user_saved,
+					created_at: route.created_at,
 					route_waypoints: [],
 				};
 
@@ -98,14 +99,17 @@ exports.getRouteDetails = async (req, res) => {
 						vicinity,
 						photo_reference,
 						query_keyword,
+						query_mood,
 						rating,
 						user_ratings_total,
 						distance,
 						walking_time,
 						place_score,
+						created_at
 					}) => {
 						return {
 							query_keyword,
+							query_mood,
 							waypoints_position,
 							latitude,
 							longitude,
@@ -118,6 +122,7 @@ exports.getRouteDetails = async (req, res) => {
 							distance,
 							walking_time,
 							place_score,
+							created_at
 						};
 					}
 				);
