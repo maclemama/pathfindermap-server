@@ -313,7 +313,7 @@ exports.placeTypeQueryFlow = async (payload) => {
 			longitude,
 			duration,
 			max_route,
-			query_mode
+			query_mood
 		);
 
 		// return places data and route data
