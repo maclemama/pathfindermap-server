@@ -86,7 +86,7 @@ exports.loginUser = async (req, res) => {
 
 		// Check if user verified
 		if(!user.verified){
-			setError("Unverified user.", 400);
+			setError("Unverified user. Please check the verification letter we sent to your email inbox and click on the verification link to confirm your email address.", 400);
 		}
 
 		// Check the password
