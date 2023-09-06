@@ -41,7 +41,7 @@ const formatPlaceOutput = (placeData, startingLatLng, keyword, query_mood) => {
 			placeOutput.query_keyword = keyword;
 		}
 
-		if(query_mood){
+		if (query_mood) {
 			placeOutput.query_mood = query_mood;
 		}
 
@@ -87,8 +87,22 @@ const orderByBestPlace = (placeData) => {
 	return newPlaceData;
 };
 
-const routeSuggest = (placesAry, latitude, longitude, duration, max_route, query_mood) => {
+const routeSuggest = (
+	placesAry,
+	latitude,
+	longitude,
+	duration,
+	max_route,
+	query_mood
+) => {
 	try {
+		if (
+			placesAry.length === 1 &&
+			placesAry[0] &&
+			placesAry[0].status === "ZERO_RESULTS"
+		) {
+			setError("No path found, please refine your search.");
+		}
 		const maxRoute = max_route;
 		const centerLatLng = { latitude: latitude, longitude: longitude };
 
