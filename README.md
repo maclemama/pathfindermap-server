@@ -18,7 +18,7 @@ This application is a map and walking route recommendation application. User cou
 
 
 ## Run Locally
-Please note that the [[Client]](https://github.com/maclemama/pathfindermap) and [[Server]](https://github.com/maclemama/pathfindermap-server) code of Pathfinder Map are seperated into two repositories. To test it locally, you will need to install both repositories. For this client side repository, please follow below instruction to install:
+Please note that the [[Client]](https://github.com/maclemama/pathfindermap) and [[Server]](https://github.com/maclemama/pathfindermap-server) code of Pathfinder Map are seperated into two repositories. To test it locally, you will need to install both repositories. For this server side repository, please follow below instruction to install:
 
 
 Clone [[Server]](https://github.com/maclemama/pathfindermap-server) repository.
