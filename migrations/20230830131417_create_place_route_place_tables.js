@@ -15,7 +15,6 @@ exports.up = function (knex) {
 		table.string("query_mood").nullable();
 		table
 			.string("route_id")
-			// .unsigned()
 			.notNullable()
 			.references("route.id")
 			.onDelete("CASCADE");

@@ -9,6 +9,8 @@ const requiredFields = [
 	"address",
 	"place_id",
 	"user_saved",
+	"polyline",
+	"summary"
 ];
 
 const allFields = [
@@ -26,6 +28,8 @@ const allFields = [
 	"place_id",
 	"title",
 	"type",
+	"polyline",
+	"summary"
 ];
 
 exports.getByID = async (routeIDs) => {

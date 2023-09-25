@@ -93,6 +93,8 @@ exports.getRouteDetails = async (req, res) => {
 					place_id: route.place_id,
 					title: route.title,
 					type: route.type,
+					polyline: route.polyline,
+					summary: route.summary
 				};
 
 				const places = await placeModel.get({ route_id: route.id });
@@ -163,6 +165,8 @@ exports.createRoute = async (req, res) => {
 			"address",
 			"place_id",
 			"user_saved",
+			"polyline",
+			"summary",
 		];
 		checkFilledAllFieldObject(payload, requiredFields);
 
@@ -178,6 +182,8 @@ exports.createRoute = async (req, res) => {
 			"place_id",
 			"title",
 			"type",
+			"polyline",
+			"summary",
 		];
 
 		const routeConfig = getObjectValueByName(payload, allFields);
