@@ -4,9 +4,8 @@ const {
 	checkEmptyObject,
 } = require("../utils/checkerUtils");
 const queryModel = require("../models/query");
-const placeController = require("../controllers/place-controller");
-const routeController = require("../controllers/route-controller");
 const jwt = require("jsonwebtoken");
+const crypto = require('crypto');
 
 exports.createQuery = async (req, res) => {
 	// parse the bearer token
@@ -45,7 +44,7 @@ exports.createQuery = async (req, res) => {
 
 		// save route to database
 
-		const createdRoutePlace = await Promise.all(
+		const suggestedRoutes = await Promise.all(
 			results.map(async (route, index) => {
 				let newRoute = {
 					longitude: createdQuery.longitude,
@@ -56,10 +55,9 @@ exports.createQuery = async (req, res) => {
 				if(userID){
 					newRoute.user_id = userID;
 				}
-		
-				const routeID = await routeController.createRoute(newRoute);
-				results[index].route_id = routeID;
-				await placeController.createPlace(route.route_waypoints, routeID);
+
+				results[index].route_id = crypto.randomUUID(); 
+
 				return;
 			})
 		);

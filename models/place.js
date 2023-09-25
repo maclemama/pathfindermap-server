@@ -20,14 +20,14 @@ const allFields = [
 	"name",
 	"waypoints_position",
 	"vicinity",
-	"photo_reference",
+	// "photo_reference",
 	"query_keyword",
 	"query_mood",
-	"rating",
-	"user_ratings_total",
-	"walking_time",
-	"distance",
-	"place_score",
+	// "rating",
+	// "user_ratings_total",
+	// "walking_time",
+	// "distance",
+	// "place_score",
 	"created_at",
 	"updated_at",
 ];
@@ -58,6 +58,7 @@ exports.create = async (payload) => {
 
 		return results;
 	} catch (error) {
-		setError("Error creating route.", 500, error);
+		
+		throw error;
 	}
 };

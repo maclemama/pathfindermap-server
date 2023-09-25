@@ -6,7 +6,9 @@ const {
 const jwt = require("jsonwebtoken");
 const routeModel = require("../models/route");
 const placeModel = require("../models/place");
+const placeController = require("../controllers/place-controller");
 const { setError } = require("../utils/errorUtils");
+const { getObjectValueByName } = require("../utils/dataUtils");
 
 exports.getRoute = async (req, res) => {
 	// if there is no auth header provided
@@ -34,7 +36,7 @@ exports.getRoute = async (req, res) => {
 		const totalPage =
 			allRoutes.length === 0 ? 0 : Math.ceil(allRoutes.length / recordsPerPage);
 
-		const resultRoutes = [...allRoutes].splice((pageID * 10 - 10), 10);
+		const resultRoutes = [...allRoutes].splice(pageID * 10 - 10, 10);
 
 		const results = {
 			total_page: totalPage,
@@ -85,6 +87,12 @@ exports.getRouteDetails = async (req, res) => {
 					user_saved: !!route.user_saved,
 					created_at: route.created_at,
 					route_waypoints: [],
+					walking_distance: route.walking_distance,
+					walking_time: route.walking_time,
+					address: route.address,
+					place_id: route.place_id,
+					title: route.title,
+					type: route.type,
 				};
 
 				const places = await placeModel.get({ route_id: route.id });
@@ -97,15 +105,9 @@ exports.getRouteDetails = async (req, res) => {
 						waypoints_position,
 						name,
 						vicinity,
-						photo_reference,
 						query_keyword,
 						query_mood,
-						rating,
-						user_ratings_total,
-						distance,
-						walking_time,
-						place_score,
-						created_at
+						created_at,
 					}) => {
 						return {
 							query_keyword,
@@ -116,13 +118,7 @@ exports.getRouteDetails = async (req, res) => {
 							place_id: google_place_id,
 							name,
 							vicinity,
-							photo_reference,
-							rating,
-							user_ratings_total,
-							distance,
-							walking_time,
-							place_score,
-							created_at
+							created_at,
 						};
 					}
 				);
@@ -138,18 +134,64 @@ exports.getRouteDetails = async (req, res) => {
 	}
 };
 
-exports.createRoute = async (payload) => {
-	const requiredFields = ["longitude", "latitude", "duration"];
+exports.createRoute = async (req, res) => {
+	// if there is no auth header provided
+	if (!req.headers.authorization) {
+		res.status(401).send("Please login");
+		return;
+	}
+
+	// parse the bearer token
+	const authToken = req.headers.authorization.split(" ")[1];
 
 	try {
+		// verify the token
+		const decodedToken = jwt.verify(authToken, process.env.JWT_KEY);
+		const userID = Number(decodedToken.id);
+		if (!userID) {
+			setError("Please login to save path", 400);
+		}
+
+		// check payload
+		const payload = req.body;
+
 		checkEmptyObject(payload);
+		const requiredFields = [
+			"id",
+			"longitude",
+			"latitude",
+			"address",
+			"place_id",
+			"user_saved",
+		];
 		checkFilledAllFieldObject(payload, requiredFields);
 
-		const route = await routeModel.create(payload);
+		const allFields = [
+			"id",
+			"longitude",
+			"latitude",
+			"user_saved",
+			"user_selected",
+			"walking_distance",
+			"walking_time",
+			"address",
+			"place_id",
+			"title",
+			"type",
+		];
 
-		return route.id;
+		const routeConfig = getObjectValueByName(payload, allFields);
+		routeConfig.user_id = userID;
+
+		const { existed_route, new_route } = await routeModel.create(routeConfig);
+		if (!existed_route) {
+			// if it is not an exsiting route, create place records.
+			await placeController.createPlace(payload.route_waypoints, payload.id);
+		}
+
+		res.status(200).json(new_route);
 	} catch (error) {
-		throw error;
+		res.status(error.statusCode ? error.statusCode : 500).json(error);
 	}
 };
 
@@ -170,16 +212,16 @@ exports.saveUnsaveRoute = async (req, res) => {
 		// verify the token
 		const decodedToken = jwt.verify(authToken, process.env.JWT_KEY);
 		const userID = Number(decodedToken.id);
-		let toggle
-		if(action === "save"){
+		let toggle;
+		if (action === "save") {
 			toggle = true;
 		}
 
-		if(action === "unsave"){
+		if (action === "unsave") {
 			toggle = false;
 		}
-		
-		const result = await routeModel.saveUnsave(routeID,toggle );
+
+		const result = await routeModel.saveUnsave(routeID, toggle);
 
 		// return data
 		res.status(200).json({

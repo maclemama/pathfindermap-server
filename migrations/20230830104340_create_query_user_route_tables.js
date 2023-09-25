@@ -40,12 +40,17 @@ exports.up = function (knex) {
 				.onDelete("CASCADE");
 		})
 		.createTable("route", (table) => {
-			table.increments("id").primary();
-			table.integer("user_id").unsigned().nullable();
+			table.string("id").primary();
+			table.integer("user_id").unsigned().notNullable();
 			table.specificType('longitude', 'double precision').notNullable();
 			table.specificType('latitude', 'double precision').notNullable();
-			table.integer("duration").notNullable();
-			table.boolean("user_saved").notNullable().defaultTo(false);
+			table.float("walking_distance").nullable();
+			table.float("walking_time").nullable();
+			table.string("title").nullable();
+			table.string("type").nullable();
+			table.string("address").notNullable();
+			table.string("place_id").notNullable();
+			table.boolean("user_saved").notNullable();
 			table.boolean("user_selected").notNullable().defaultTo(false);
 			table.timestamp("created_at").defaultTo(knex.fn.now());
 			table

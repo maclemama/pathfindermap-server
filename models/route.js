@@ -1,18 +1,31 @@
 const knex = require("knex")(require("../knexfile"));
 const { setError } = require("../utils/errorUtils");
 
-const requiredFields = ["longitude", "latitude", "duration"];
+const requiredFields = [
+	"id",
+	"user_id",
+	"longitude",
+	"latitude",
+	"address",
+	"place_id",
+	"user_saved",
+];
 
 const allFields = [
 	"id",
 	"user_id",
 	"longitude",
 	"latitude",
-	"duration",
 	"user_saved",
 	"user_selected",
 	"created_at",
 	"updated_at",
+	"walking_distance",
+	"walking_time",
+	"address",
+	"place_id",
+	"title",
+	"type",
 ];
 
 exports.getByID = async (routeIDs) => {
@@ -39,14 +52,21 @@ exports.get = async (filter) => {
 
 exports.create = async (payload) => {
 	try {
-		const newRecordIndex = await knex("route").insert([payload]);
-		const results = await knex("route")
-			.where({
-				id: newRecordIndex[0],
-			})
-			.first();
+		const existingRecord = await this.get({ id: payload.id });
 
-		return results;
+		let result = {
+			existed_route:false,
+			new_route:null
+		}
+		if (existingRecord[0]) {
+			result.existed_route = true;
+			await knex("route").update(payload).where({ id: payload.id });
+		} else {
+			await knex("route").insert([payload]);
+		}
+		result.new_route = await this.get({ id: payload.id });
+
+		return result;
 	} catch (error) {
 		setError("Error creating route.", 500, error);
 	}
@@ -54,12 +74,16 @@ exports.create = async (payload) => {
 
 exports.saveUnsave = async (routeID, saveUnsave) => {
 	try {
-		const updataResult = await knex("route").update({user_saved:saveUnsave}).where({ id: routeID });
-		const result = await knex("route").select("user_saved").where({ id: routeID });
+		const updataResult = await knex("route")
+			.update({ user_saved: saveUnsave })
+			.where({ id: routeID });
+		const result = await knex("route")
+			.select("user_saved")
+			.where({ id: routeID });
 		if (!updataResult) {
 			setError("No matching route found", 404);
 		}
-	
+
 		return result;
 	} catch (error) {
 		setError("Error getting uesr.", 500, error);
