@@ -10,7 +10,7 @@ const requiredFields = [
 	"place_id",
 	"user_saved",
 	"polyline",
-	"summary"
+	"summary",
 ];
 
 const allFields = [
@@ -29,7 +29,7 @@ const allFields = [
 	"title",
 	"type",
 	"polyline",
-	"summary"
+	"summary",
 ];
 
 exports.getByID = async (routeIDs) => {
@@ -59,9 +59,9 @@ exports.create = async (payload) => {
 		const existingRecord = await this.get({ id: payload.id });
 
 		let result = {
-			existed_route:false,
-			new_route:null
-		}
+			existed_route: false,
+			new_route: null,
+		};
 		if (existingRecord[0]) {
 			result.existed_route = true;
 			await knex("route").update(payload).where({ id: payload.id });
@@ -71,6 +71,15 @@ exports.create = async (payload) => {
 		result.new_route = await this.get({ id: payload.id });
 
 		return result;
+	} catch (error) {
+		setError("Error creating route.", 500, error);
+	}
+};
+
+exports.delete = async (route_id) => {
+	try {
+		await knex("route").where({ id: route_id }).del();
+		return;
 	} catch (error) {
 		setError("Error creating route.", 500, error);
 	}

@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const routeController = require("../controllers/route-controller");
 
-router.route("/").post(routeController.createRoute);
+router.route("/").post(routeController.createRoute)
+.delete(routeController.deleteRoute);
 
 router.route("/details").post(routeController.getRouteDetails);
 

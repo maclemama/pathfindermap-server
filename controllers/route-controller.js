@@ -94,7 +94,7 @@ exports.getRouteDetails = async (req, res) => {
 					title: route.title,
 					type: route.type,
 					polyline: route.polyline,
-					summary: route.summary
+					summary: route.summary,
 				};
 
 				const places = await placeModel.get({ route_id: route.id });
@@ -196,6 +196,48 @@ exports.createRoute = async (req, res) => {
 		}
 
 		res.status(200).json(new_route);
+	} catch (error) {
+		res.status(error.statusCode ? error.statusCode : 500).json(error);
+	}
+};
+
+exports.deleteRoute = async (req, res) => {
+	try {
+		// if there is no auth header provided
+		if (!req.headers.authorization) {
+			setError("Please login to continue", 401);
+			return;
+		}
+
+		// parse the bearer token
+		const authToken = req.headers.authorization.split(" ")[1];
+
+		// verify the token
+		const decodedToken = jwt.verify(authToken, process.env.JWT_KEY);
+		const userID = Number(decodedToken.id);
+		if (!userID) {
+			setError("Please login to save path", 400);
+		}
+
+		// check payload
+		const payload = req.body;
+		checkEmptyObject(payload);
+		const requiredFields = ["route_id"];
+		checkFilledAllFieldObject(payload, requiredFields);
+
+		const targetRouteToDelete = await routeModel.get({
+			user_id: userID,
+			id: payload.route_id,
+		});
+
+		if (targetRouteToDelete[0]) {
+			await routeModel.delete(payload.route_id);
+			res.status(200).json({
+				success: true,
+			});
+		} else {
+			setError("Path doesn't exist or not belong to current user", 401);
+		}
 	} catch (error) {
 		res.status(error.statusCode ? error.statusCode : 500).json(error);
 	}
