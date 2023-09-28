@@ -46,7 +46,7 @@ exports.get = async (filter) => {
 	try {
 		const routes = await knex("route")
 			.where(filter)
-			.orderBy("created_at", "asc");
+			.orderBy("created_at", "desc");
 
 		return routes;
 	} catch (error) {
@@ -87,7 +87,7 @@ exports.getByQuery = async (query, filter) => {
 			.orWhereILike("place_table.query_keyword", `%${query}%`)
 			.orWhereILike("place_table.query_mood", `%${query}%`)
 			.orWhereILike("place_table.vicinity", `%${query}%`)
-			.orderBy("route_table.created_at", "asc");
+			.orderBy("route_table.created_at", "desc");
 
 		return routes;
 	} catch (error) {
