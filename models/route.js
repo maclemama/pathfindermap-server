@@ -54,6 +54,47 @@ exports.get = async (filter) => {
 	}
 };
 
+exports.getByQuery = async (query, filter) => {
+	try {
+		const routes = await knex(knex("route").where(filter).as("route_table"))
+			.join(
+				knex("place").as("place_table"),
+				"route_table.id",
+				"place_table.route_id"
+			)
+			.select(
+				"route_table.id",
+				"route_table.user_id",
+				"route_table.longitude",
+				"route_table.latitude",
+				"route_table.user_saved",
+				"route_table.user_selected",
+				"route_table.created_at",
+				"route_table.updated_at",
+				"route_table.walking_distance",
+				"route_table.walking_time",
+				"route_table.address",
+				"route_table.place_id",
+				"route_table.title",
+				"route_table.type",
+				"route_table.polyline",
+				"route_table.summary"
+			)
+			.distinct("route_table.id")
+			.whereILike("route_table.address", `%${query}%`)
+			.orWhereILike("route_table.title", `%${query}%`)
+			.orWhereILike("place_table.name", `%${query}%`)
+			.orWhereILike("place_table.query_keyword", `%${query}%`)
+			.orWhereILike("place_table.query_mood", `%${query}%`)
+			.orWhereILike("place_table.vicinity", `%${query}%`)
+			.orderBy("route_table.created_at", "asc");
+
+		return routes;
+	} catch (error) {
+		setError("Error getting uesr.", 500, error);
+	}
+};
+
 exports.create = async (payload) => {
 	try {
 		const existingRecord = await this.get({ id: payload.id });

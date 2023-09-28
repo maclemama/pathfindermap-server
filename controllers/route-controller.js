@@ -52,6 +52,44 @@ exports.getRoute = async (req, res) => {
 	}
 };
 
+exports.searchRoute = async (req, res) => {
+	// if there is no auth header provided
+	if (!req.headers.authorization) {
+		res.status(401).send("Please login");
+		return;
+	}
+
+	const query = req.query.search;
+
+	// parse the bearer token
+	const authToken = req.headers.authorization.split(" ")[1];
+
+	try {
+		// verify the token
+		const decodedToken = jwt.verify(authToken, process.env.JWT_KEY);
+		const userID = Number(decodedToken.id);
+
+		const allRoutes = await routeModel.getByQuery(query,{
+			"user_id": userID,
+			"user_saved": true,
+		});
+		console.log(allRoutes.length)
+
+		const results = {
+			total_page: 1,
+			current_page: 1,
+			next_page: null,
+			data: allRoutes,
+		};
+
+		// return data
+		res.status(200).json(results);
+	} catch (error) {
+		res.status(error.statusCode ? error.statusCode : 500).json(error);
+	}
+};
+
+
 exports.getRouteDetails = async (req, res) => {
 	// if there is no auth header provided
 	if (!req.headers.authorization) {
