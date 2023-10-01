@@ -69,8 +69,6 @@ exports.searchRoute = async (req, res) => {
 		const decodedToken = jwt.verify(authToken, process.env.JWT_KEY);
 		const userID = Number(decodedToken.id);
 
-		console.log(query)
-
 		const allRoutes = await routeModel.getByQuery(query,{
 			"user_id": userID,
 			"user_saved": true,
