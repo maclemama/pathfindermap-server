@@ -10,18 +10,11 @@ exports.up = function (knex) {
 		table.specificType("latitude", "double precision").notNullable();
 		table.string("name").notNullable();
 		table.integer("waypoints_position").notNullable();
-		table.integer("rating").nullable();
 		table.string("vicinity").nullable();
-		table.string("photo_reference").nullable();
 		table.string("query_keyword").nullable();
 		table.string("query_mood").nullable();
-		table.integer("user_ratings_total").nullable();
-		table.integer("walking_time").nullable();
-		table.integer("distance").nullable();
-		table.integer("place_score").nullable();
 		table
-			.integer("route_id")
-			.unsigned()
+			.string("route_id")
 			.notNullable()
 			.references("route.id")
 			.onDelete("CASCADE");

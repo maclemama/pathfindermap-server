@@ -25,8 +25,8 @@ exports.up = function (knex) {
 			table.integer("radius").notNullable();
 			table.boolean("opennow_only").notNullable();
 			table.integer("max_route").notNullable();
-			table.specificType('longitude', 'double precision').notNullable();
-			table.specificType('latitude', 'double precision').notNullable();
+			table.specificType("longitude", "double precision").notNullable();
+			table.specificType("latitude", "double precision").notNullable();
 			table.string("query_keyword").nullable();
 			table.string("query_mood").nullable();
 			table.timestamp("created_at").defaultTo(knex.fn.now());
@@ -40,12 +40,19 @@ exports.up = function (knex) {
 				.onDelete("CASCADE");
 		})
 		.createTable("route", (table) => {
-			table.increments("id").primary();
-			table.integer("user_id").unsigned().nullable();
-			table.specificType('longitude', 'double precision').notNullable();
-			table.specificType('latitude', 'double precision').notNullable();
-			table.integer("duration").notNullable();
-			table.boolean("user_saved").notNullable().defaultTo(false);
+			table.string("id").primary();
+			table.integer("user_id").unsigned().notNullable();
+			table.specificType("longitude", "double precision").notNullable();
+			table.specificType("latitude", "double precision").notNullable();
+			table.float("walking_distance").nullable();
+			table.float("walking_time").nullable();
+			table.string("title").nullable();
+			table.string("type").nullable();
+			table.string("address").notNullable();
+			table.string("place_id").notNullable();
+			table.text("polyline").notNullable();
+			table.string("summary").notNullable();
+			table.boolean("user_saved").notNullable();
 			table.boolean("user_selected").notNullable().defaultTo(false);
 			table.timestamp("created_at").defaultTo(knex.fn.now());
 			table
