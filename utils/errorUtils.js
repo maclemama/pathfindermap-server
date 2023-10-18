@@ -9,10 +9,9 @@ exports.setError = (errorMessage, statusCode, nativeError) => {
 		error.message = errorMessage ? errorMessage : "Unknown error.";
 		if (ENV === "DEV" && nativeError) {
 			error.native_error = nativeError;
-			console.error(error)
 		}
 		error.statusCode = statusCode ? statusCode : 500;
 	}
-
+	console.error(nativeError)
 	throw error;
 };
