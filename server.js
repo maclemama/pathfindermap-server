@@ -7,7 +7,7 @@ const userRoutes = require("./routes/user-routes");
 const routeRoutes = require("./routes/route-routes");
 
 const ENV = process.env.ENV;
-const PORT = ENV === "PROD" ? "" : process.env.PORT || 8080;
+const PORT = process.env.PORT || 8080;
 const HOST = ENV === "PROD" ? process.env.PROD_HOST : process.env.DEV_HOST;
 
 const app = express();
